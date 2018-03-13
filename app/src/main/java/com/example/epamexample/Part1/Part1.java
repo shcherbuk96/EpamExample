@@ -61,7 +61,7 @@ public class Part1 extends Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getActivity().setTitle("Part 2");
+        getActivity().setTitle("Part 3");
 
 
     }
