@@ -6,7 +6,9 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toolbar;
@@ -19,10 +21,12 @@ import org.w3c.dom.Text;
 import static com.example.epamexample.Part1.Part1.isOnline;
 import static java.security.AccessController.getContext;
 
-public class Item extends AppCompatActivity {
+public class Item extends AppCompatActivity implements View.OnClickListener{
     TextView name;
     ImageView image;
     Toolbar toolbar;
+    Intent intent;
+    Button btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +35,8 @@ public class Item extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        btn=(Button)findViewById(R.id.btn);
+        btn.setOnClickListener(this);
 /*        if(!isOnline(this)){
             ImageView imageView=(ImageView)findViewById(R.id.image_internet);
             TextView textVie=(TextView)findViewById(R.id.text_internet);
@@ -50,9 +56,12 @@ public class Item extends AppCompatActivity {
         image=(ImageView)findViewById(R.id.item_image);
 
 
-        Intent intent=getIntent();
+        intent=getIntent();
 
         setTitle(intent.getStringExtra("name"));
+
+        Log.i("latitude",intent.getStringExtra("latitude"));
+        Log.i("longitude",intent.getStringExtra("longitude"));
         name.setText(intent.getStringExtra("name"));
         Picasso.with(this).load(intent.getStringExtra("url")).into(image);
 
@@ -62,5 +71,15 @@ public class Item extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent in=new Intent(this,MapGoogle.class);
+
+        in.putExtra("latitude",intent.getStringExtra("latitude"));
+        in.putExtra("longitude",intent.getStringExtra("longitude"));
+        in.putExtra("url",intent.getStringExtra("url"));
+        startActivity(in);
     }
 }

@@ -63,6 +63,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 Intent intent=new Intent(context,Item.class);
                 intent.putExtra("name",modelPart1.getTitle());
                 intent.putExtra("url",modelPart1.getUrl());
+                intent.putExtra("latitude",String.valueOf(modelPart1.getLatitude()));
+                intent.putExtra("longitude",String.valueOf(modelPart1.getLongitude()));
                 context.startActivity(intent);
             }
         });
