@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.epamexample.R;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -43,6 +45,8 @@ import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Администратор on 06.03.2018.
@@ -55,7 +59,8 @@ public class Part1 extends Fragment{
     DBAdapter dbAdapter;
     RealmList<Photo> realmList;
     Realm realm;
-
+    RealmList<Photo> realmListPhoto = new RealmList<>();
+    ListRealm listRealm;
     List<Photo> photoList=new ArrayList<>();
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -81,8 +86,70 @@ public class Part1 extends Fragment{
 //        DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), VERTICAL);
 //        recyclerView.addItemDecoration(itemDecor);
 
-        Work work=new Work();
-        work.execute();
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.myjson.com/bins/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        Api api = retrofit.create(Api.class);
+
+        if (isOnline(getContext())){
+            Call<ListApi> listApiCall=api.listData();
+            listApiCall.enqueue(new Callback<ListApi>() {
+                @Override
+                public void onResponse(Call<ListApi> call, Response<ListApi> response) {
+                    if (response.isSuccessful()) {
+                        Log.i("if","response " + response.body());
+                        //Realm realmAssync=Realm.getDefaultInstance();
+                        //listRealm=realm.where(ListRealm.class).findFirst();
+                        if(realm.where(Photo.class).findAll().size()<12){
+                            for(Photo photo: response.body().getList()){
+                                realm.beginTransaction();
+                                Photo photo_model=realm.createObject(Photo.class);
+                                photo_model.setUrl(photo.getUrl());
+                                photo_model.setTitle(photo.getTitle());
+                                photo_model.setDescription(photo.getDescription());
+                                photo_model.setId(photo.getId());
+                                photo_model.setLatitude(photo.getLatitude());
+                                photo_model.setLongitude(photo.getLongitude());
+                                realm.commitTransaction();
+                            }
+
+                        }
+//                        listRealm.setRealmList(realmListPhoto);
+
+                        recyclerAdapter=new RecyclerAdapter(response.body().getList(),getContext());
+
+                        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(),3);
+                        recyclerView.setLayoutManager(mLayoutManager);
+                        recyclerView.setAdapter(recyclerAdapter);
+                    } else {
+                        Log.i("else","response code " + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ListApi> call, Throwable t) {
+                    Log.i("onFailure",t.toString());
+                }
+            });
+        }
+
+        if(!isOnline(getContext())){
+            //listRealm=realm.where(ListRealm.class).findFirst();
+            dbAdapter=new DBAdapter(realm.where(Photo.class).findAll(),getContext());
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(),3);
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setAdapter(dbAdapter);
+        }
+
+/*        Work work=new Work();
+        work.execute();*/
 
 /*        AsyncTask asyncTask=new AsyncTask() {
             @Override
@@ -108,7 +175,7 @@ public class Part1 extends Fragment{
 
         return view;
     }
-    public class Work extends AsyncTask<Void,Void,Void>{
+   /* public class Work extends AsyncTask<Void,Void,Void>{
 
 
         @Override
@@ -138,7 +205,7 @@ public class Part1 extends Fragment{
             // Log.d("JSON",);
             return null;
         }
-    }
+    }*/
 
     public void getResponse(String body){
         try {
@@ -258,7 +325,9 @@ public class Part1 extends Fragment{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        realm.close();
+        if(realm!=null){
+            realm.close();
+        }
     }
 
 }

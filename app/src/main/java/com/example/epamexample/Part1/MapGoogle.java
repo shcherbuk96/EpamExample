@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +33,8 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.io.IOException;
+
+import static java.security.AccessController.getContext;
 
 
 public class MapGoogle extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
@@ -70,18 +73,16 @@ public class MapGoogle extends AppCompatActivity implements OnMapReadyCallback, 
 
 
 
+
     public void loadImage() {
 
         Picasso.with(getBaseContext()).load(intent.getStringExtra("url")).into(new Target() {
-            // ....
-
             @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom arg1) {
-                // Pick arbitrary values for width and height
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
                 Bitmap resizedBitmap = getResizedBitmap(bitmap, 150, 150);
                 mMap.addMarker(new MarkerOptions().position(latLng).title("Marker")
-                        .icon(BitmapDescriptorFactory
-                                .fromBitmap(resizedBitmap)));
+                        .icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap)));
             }
 
             @Override
@@ -93,8 +94,6 @@ public class MapGoogle extends AppCompatActivity implements OnMapReadyCallback, 
             public void onPrepareLoad(Drawable placeHolderDrawable) {
 
             }
-
-            // ....
         });
     }
 
@@ -111,7 +110,7 @@ public class MapGoogle extends AppCompatActivity implements OnMapReadyCallback, 
         // "RECREATE" THE NEW BITMAP
         Bitmap resizedBitmap = Bitmap.createBitmap(
                 bm, 0, 0, width, height, matrix, false);
-        bm.recycle();
+        //bm.recycle();
         return resizedBitmap;
     }
 
@@ -120,6 +119,7 @@ public class MapGoogle extends AppCompatActivity implements OnMapReadyCallback, 
         mMap = googleMap;
         // Add a marker in Sydney, Australia, and move the camera.
         latLng = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
+
        // placePhotosTask();
         loadImage();
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -130,143 +130,10 @@ public class MapGoogle extends AppCompatActivity implements OnMapReadyCallback, 
 
     }
 
-    /*abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.AttributedPhoto> {
-
-        private int mHeight;
-
-        private int mWidth;
-
-        public PhotoTask(int width, int height) {
-            mHeight = height;
-            mWidth = width;
-        }
-
-        *//**
-         * Loads the first photo for a place id from the Geo Data API.
-         * The place id must be the first (and only) parameter.
-         *//*
-        @Override
-        protected AttributedPhoto doInBackground(String... params) {
-            if (params.length != 1) {
-                return null;
-            }
-            final String placeId = params[0];
-            AttributedPhoto attributedPhoto = null;
-
-            PlacePhotoMetadataResult result = Places.GeoDataApi
-                    .getPlacePhotos(mGoogleApiClient, placeId).await();
-
-            if (result.getStatus().isSuccess()) {
-                PlacePhotoMetadataBuffer photoMetadataBuffer = result.getPhotoMetadata();
-                if (photoMetadataBuffer.getCount() > 0 && !isCancelled()) {
-                    // Get the first bitmap and its attributions.
-                    PlacePhotoMetadata photo = photoMetadataBuffer.get(0);
-                    CharSequence attribution = photo.getAttributions();
-                    // Load a scaled bitmap for this photo.
-                    Bitmap image = photo.getScaledPhoto(mGoogleApiClient, mWidth, mHeight).await()
-                            .getBitmap();
-
-                    attributedPhoto = new AttributedPhoto(attribution, image);
-                }
-                // Release the PlacePhotoMetadataBuffer.
-                photoMetadataBuffer.release();
-            }
-            return attributedPhoto;
-        }
-
-        *//**
-         * Holder for an image and its attribution.
-         *//*
-        class AttributedPhoto {
-
-            public final CharSequence attribution;
-
-            public final Bitmap bitmap;
-
-            public AttributedPhoto(CharSequence attribution, Bitmap bitmap) {
-                this.attribution = attribution;
-                this.bitmap = bitmap;
-            }
-        }
-    }
-
-    private void placePhotosTask() {
-        final String placeId = "ChIJrTLr-GyuEmsRBfy61i59si0"; // Australian Cruise Group
-
-        // Create a new AsyncTask that displays the bitmap and attribution once loaded.
-        new PhotoTask(100, 100) {
-            @Override
-            protected void onPreExecute() {
-                // Display a temporary image to show while bitmap is loading.
-                Log.i("OnPreExecute","good");
-                mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
-            }
-
-            @Override
-            protected void onPostExecute(AttributedPhoto attributedPhoto) {
-                Log.i("OnPreExecute", String.valueOf(attributedPhoto));
-                if (attributedPhoto != null) {
-                    Log.i("onPostExecute","good");
-                    // Photo has been loaded, display it.
-                    mMap.addMarker(new MarkerOptions().position(latLng).title("Marker").icon(BitmapDescriptorFactory.fromBitmap(attributedPhoto.bitmap)));
-                    //mImageView.setImageBitmap(attributedPhoto.bitmap);
-
-*//*                    // Display the attribution as HTML content if set.
-                    if (attributedPhoto.attribution == null) {
-                        mText.setVisibility(View.GONE);
-                    } else {
-                        mText.setVisibility(View.VISIBLE);
-                        mText.setText(Html.fromHtml(attributedPhoto.attribution.toString()));
-                    }*//*
-
-                }
-            }
-        }.execute();
-    }*/
-  /*  //создаем карту
-    private void createMapView(){
-
-        try {
-            if(null == googleMap){
-                googleMap = ((MapFragment) getFragmentManager().findFragmentById(
-                        R.id.mapView)).getMap();
-
-                if(null == googleMap) {
-                    Toast.makeText(getApplicationContext(),
-                            "Error creating map", Toast.LENGTH_SHORT).show();
-                }
-            }
-        } catch (NullPointerException exception){
-            Log.e("mapApp", exception.toString());
-        }
-
-    }
-
-    //добавляем маркер на карту
-    private void addMarker(){
-
-        double lat = TARGET_LATITUDE;
-        double lng = TARGET_LONGITUDE;
-        //устанавливаем позицию и масштаб отображения карты
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(lat, lng))
-                .zoom(15)
-                .build();
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
-        googleMap.animateCamera(cameraUpdate);
-
-        if(null != googleMap){
-            googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(lat, lng))
-                    .title("Mark")
-                    .draggable(false)
-            );
-        }
-    }*/
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
+        finish();
     }
 }
