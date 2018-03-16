@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.example.epamexample.R;
 import com.squareup.picasso.Picasso;
 
-public class Item extends AppCompatActivity implements View.OnClickListener, Constants{
+public class Item extends AppCompatActivity implements View.OnClickListener, Constants {
     TextView name;
     ImageView image;
     Intent intent;

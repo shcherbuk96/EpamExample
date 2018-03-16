@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmObject;
 
-public class Photo extends RealmObject{
+public class Photo extends RealmObject {
 
 
     @SerializedName("id")
@@ -28,9 +28,10 @@ public class Photo extends RealmObject{
     private String url;
 
 
-    public Photo(){
+    public Photo() {
 
     }
+
     public Photo(int id, String title, String description, double latitude, double longitude, String url) {
         this.id = id;
         this.title = title;

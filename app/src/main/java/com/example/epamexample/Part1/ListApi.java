@@ -4,9 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-/**
- * Created by Yauheni_Shcharbuk on 3/14/2018.
- */
 
 public class ListApi {
     @SerializedName("photos")

@@ -64,6 +64,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     }
 
+    public void updateData(List<Photo> viewModels) {
+        items.clear();
+        items.addAll(viewModels);
+        notifyDataSetChanged();
+    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
@@ -76,11 +81,5 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             name = view.findViewById(R.id.name);
             relative = view.findViewById(R.id.relative);
         }
-    }
-
-    public void updateData(List<Photo> viewModels) {
-        items.clear();
-        items.addAll(viewModels);
-        notifyDataSetChanged();
     }
 }

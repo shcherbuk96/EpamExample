@@ -29,7 +29,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-
 public class Part1 extends Fragment {
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
@@ -85,11 +84,11 @@ public class Part1 extends Fragment {
 
                         Log.i("if", "response " + response.body());
                         addListPhoto(response.body().getList());
-                        if(recyclerAdapter==null){
+                        if (recyclerAdapter == null) {
                             Log.i("recyclerAdapter", "null");
                             recyclerAdapter = new RecyclerAdapter(response.body().getList(), getContext());
 
-                        }else{
+                        } else {
                             Log.i("recyclerAdapter", "!null");
                             recyclerAdapter.updateData(response.body().getList());
                         }
