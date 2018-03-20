@@ -50,8 +50,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 Intent intent = new Intent(context, Item.class);
                 intent.putExtra(KEY_NAME, photo.getTitle());
                 intent.putExtra(KEY_URL, photo.getUrl());
-/*                intent.putExtra("latitude",modelPart1.getLatitude());
-                intent.putExtra("longitude",modelPart1.getLongitude());*/
                 context.startActivity(intent);
             }
         });

@@ -3,15 +3,29 @@ package com.example.epamexample.Part1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.example.epamexample.Presenters.ActionBarPresenter;
+import com.example.epamexample.Presenters.ItemPresenter;
 import com.example.epamexample.R;
+import com.example.epamexample.Views.ActionBarView;
+import com.example.epamexample.Views.ItemView;
 import com.squareup.picasso.Picasso;
 
-public class Item extends AppCompatActivity implements View.OnClickListener, Constants {
+public class Item extends MvpAppCompatActivity implements View.OnClickListener, Constants, ItemView, ActionBarView {
+
+    @InjectPresenter
+    ItemPresenter itemPresenter;
+
+    @InjectPresenter
+    ActionBarPresenter actionBarPresenter;
+
     TextView name;
     ImageView image;
     Intent intent;
@@ -28,16 +42,13 @@ public class Item extends AppCompatActivity implements View.OnClickListener, Con
         btn = findViewById(R.id.btn);
         btn.setOnClickListener(this);
 
-        name = findViewById(R.id.item_name);
-        image = findViewById(R.id.item_image);
-
 
         intent = getIntent();
 
-        setTitle(intent.getStringExtra(KEY_NAME));
+        itemPresenter.getViewState().showName(intent.getStringExtra(KEY_NAME));
+        itemPresenter.getViewState().showPhoto(intent.getStringExtra(KEY_URL));
 
-        name.setText(intent.getStringExtra(KEY_NAME));
-        Picasso.with(this).load(intent.getStringExtra(KEY_URL)).into(image);
+        actionBarPresenter.getViewState().showActionBar(intent.getStringExtra(KEY_NAME));
 
     }
 
@@ -55,5 +66,23 @@ public class Item extends AppCompatActivity implements View.OnClickListener, Con
         in.putExtra("longitude", intent.getDoubleExtra("longitude", 0));
         in.putExtra("url", intent.getStringExtra("url"));
         startActivity(in);
+    }
+
+    @Override
+    public void showName(String namePhoto) {
+        Log.i("Title","Title");
+        name = findViewById(R.id.item_name);
+        name.setText(namePhoto);
+    }
+
+    @Override
+    public void showPhoto(String urlPhoto) {
+        image = findViewById(R.id.item_image);
+        Picasso.with(this).load(urlPhoto).into(image);
+    }
+
+    @Override
+    public void showActionBar(String actionBar) {
+        setTitle(actionBar);
     }
 }

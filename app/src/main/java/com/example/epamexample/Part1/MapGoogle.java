@@ -25,7 +25,6 @@ import com.squareup.picasso.Target;
 
 import java.util.List;
 
-import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

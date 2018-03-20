@@ -6,7 +6,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,7 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.example.epamexample.Presenters.ActionBarPresenter;
 import com.example.epamexample.R;
+import com.example.epamexample.Views.ActionBarView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -29,11 +32,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class Part1 extends Fragment {
+public class Part1 extends MvpAppCompatFragment implements ActionBarView {
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
     Realm realm;
 
+    @InjectPresenter
+    ActionBarPresenter actionBarPresenter;
 
     static public boolean isOnline(Context context) {
         ConnectivityManager cm =
@@ -52,8 +57,6 @@ public class Part1 extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getActivity().setTitle("Part 3");
-
 
     }
 
@@ -63,6 +66,8 @@ public class Part1 extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_part1, container, false);
         recyclerView = view.findViewById(R.id.recyclerview);
+        actionBarPresenter.getViewState().showActionBar("Hi, moxy");
+
 
         Gson gson = new GsonBuilder()
                 .setLenient()
@@ -146,4 +151,8 @@ public class Part1 extends Fragment {
         }
     }
 
+    @Override
+    public void showActionBar(String actionBar) {
+        getActivity().setTitle(actionBar);
+    }
 }
