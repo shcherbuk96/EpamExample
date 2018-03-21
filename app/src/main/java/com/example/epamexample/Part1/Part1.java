@@ -16,8 +16,10 @@ import android.view.ViewGroup;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.epamexample.Presenters.ActionBarPresenter;
+import com.example.epamexample.Presenters.GetBodyPresent;
 import com.example.epamexample.R;
 import com.example.epamexample.Views.ActionBarView;
+import com.example.epamexample.Views.GetBodyView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -32,13 +34,16 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class Part1 extends MvpAppCompatFragment implements ActionBarView {
+public class Part1 extends MvpAppCompatFragment implements ActionBarView,GetBodyView {
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
     Realm realm;
 
     @InjectPresenter
     ActionBarPresenter actionBarPresenter;
+
+    @InjectPresenter
+    GetBodyPresent getBodyPresent;
 
     static public boolean isOnline(Context context) {
         ConnectivityManager cm =
@@ -66,10 +71,11 @@ public class Part1 extends MvpAppCompatFragment implements ActionBarView {
 
         View view = inflater.inflate(R.layout.fragment_part1, container, false);
         recyclerView = view.findViewById(R.id.recyclerview);
-        actionBarPresenter.getViewState().showActionBar("Hi, moxy");
+//        actionBarPresenter.getViewState().showActionBar("Hi, moxy");
 
 
-        Gson gson = new GsonBuilder()
+
+/*        Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
 
@@ -81,7 +87,7 @@ public class Part1 extends MvpAppCompatFragment implements ActionBarView {
         Api api = retrofit.create(Api.class);
 
         if (isOnline(getContext())) {
-            Call<ListApi> listApiCall = api.listData();
+*//*            Call<ListApi> listApiCall = api.listData();
             listApiCall.enqueue(new Callback<ListApi>() {
                 @Override
                 public void onResponse(Call<ListApi> call, Response<ListApi> response) {
@@ -111,7 +117,7 @@ public class Part1 extends MvpAppCompatFragment implements ActionBarView {
                 public void onFailure(Call<ListApi> call, Throwable t) {
                     Log.i("onFailure", t.toString());
                 }
-            });
+            });*//*
         } else {
             if (realm.where(Photo.class).findFirst() != null) {
                 Log.i("DB", "DB!=null");
@@ -125,7 +131,7 @@ public class Part1 extends MvpAppCompatFragment implements ActionBarView {
                 view = inflater.inflate(R.layout.activity_internet_connection, container, false);
             }
 
-        }
+        }*/
 
 
         return view;
@@ -154,5 +160,23 @@ public class Part1 extends MvpAppCompatFragment implements ActionBarView {
     @Override
     public void showActionBar(String actionBar) {
         getActivity().setTitle(actionBar);
+    }
+
+    @Override
+    public void showRetrofit(List<Photo> list) {
+
+        if (recyclerAdapter == null) {
+            addListPhoto(list);
+            Log.i("recyclerAdapter", "null");
+            recyclerAdapter = new RecyclerAdapter(list, getContext());
+
+        } else {
+            Log.i("recyclerAdapter", "!null");
+            recyclerAdapter.updateData(list);
+        }
+
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(recyclerAdapter);
     }
 }
