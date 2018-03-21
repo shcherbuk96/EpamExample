@@ -61,15 +61,14 @@ public class Item extends MvpAppCompatActivity implements View.OnClickListener, 
     public void onClick(View view) {
         Intent in = new Intent(this, MapGoogle.class);
 
-        in.putExtra("latitude", intent.getDoubleExtra("latitude", 0));
-        in.putExtra("longitude", intent.getDoubleExtra("longitude", 0));
-        in.putExtra("url", intent.getStringExtra("url"));
+        in.putExtra(KEY_LATI, intent.getDoubleExtra("latitude", 0));
+        in.putExtra(KEY_LONGI, intent.getDoubleExtra("longitude", 0));
+        in.putExtra(KEY_URL, intent.getStringExtra("url"));
         startActivity(in);
     }
 
     @Override
     public void showName(String namePhoto) {
-        Log.i("Title","Title");
         name = findViewById(R.id.item_name);
         name.setText(namePhoto);
     }

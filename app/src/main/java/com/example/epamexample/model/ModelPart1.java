@@ -1,12 +1,15 @@
 package com.example.epamexample.model;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.epamexample.part1.Api;
 import com.example.epamexample.part1.ListApi;
 import com.example.epamexample.part1.Photo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -50,6 +53,7 @@ public class ModelPart1 {
         listApiCall.enqueue(new Callback<ListApi>() {
             @Override
             public void onResponse(Call<ListApi> call, Response<ListApi> response) {
+                addListPhoto(response.body().getList());
                 getDataRetrofit.getBody(response.body().getList());
             }
 
@@ -61,6 +65,21 @@ public class ModelPart1 {
                     RealmResults<Photo> result = realm.where(Photo.class).findAll();
                     getDataRetrofit.getBody(realm.copyFromRealm(result));
                 }
+                else{
+                    getDataRetrofit.getBody(null);
+                }
+            }
+        });
+    }
+
+    public void addListPhoto(final List<Photo> photoList) {
+
+        realm.executeTransaction(new Realm.Transaction() {
+
+            @Override
+            public void execute(Realm realm) {
+                realm.delete(Photo.class);
+                realm.insertOrUpdate(photoList);
             }
         });
     }

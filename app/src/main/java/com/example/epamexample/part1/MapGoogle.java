@@ -9,6 +9,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.epamexample.R;
+import com.example.epamexample.model.GetDataRetrofit;
+import com.example.epamexample.model.ModelPart1;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
@@ -32,53 +34,22 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class MapGoogle extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
+public class MapGoogle extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener,GetDataRetrofit {
     GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
+    private ModelPart1 modelPart1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_google);
-
+        modelPart1=new ModelPart1(this);
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
-
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.myjson.com/bins/")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        Api api = retrofit.create(Api.class);
-
-        Call<ListApi> listApiCall = api.listData();
-        listApiCall.enqueue(new Callback<ListApi>() {
-            @Override
-            public void onResponse(Call<ListApi> call, Response<ListApi> response) {
-                if (response.isSuccessful()) {
-                    loadImage(response.body().getList());
-                    Log.i("if", "response " + response.body().getList().size());
-
-                } else {
-                    Toast.makeText(getApplicationContext(), "Ошибка загрузки данных", Toast.LENGTH_SHORT).show();
-                    Log.i("else", "response code " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ListApi> call, Throwable t) {
-                Log.i("onFailure", t.toString());
-                Toast.makeText(getApplicationContext(), "Ошибка загрузки данных", Toast.LENGTH_SHORT).show();
-            }
-        });
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getSupportFragmentManager()
@@ -92,7 +63,7 @@ public class MapGoogle extends AppCompatActivity implements OnMapReadyCallback, 
         if (photos != null) {
             for (final Photo photo : photos) {
 
-                Picasso.with(getBaseContext()).load(photo.getUrl()).resize(120, 120).into(new Target() {
+                Picasso.with(getBaseContext()).load(photo.getUrl()).resize(100, 100).into(new Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 
@@ -139,4 +110,8 @@ public class MapGoogle extends AppCompatActivity implements OnMapReadyCallback, 
     }
 
 
+    @Override
+    public void getBody(List<Photo> list) {
+        loadImage(list);
+    }
 }

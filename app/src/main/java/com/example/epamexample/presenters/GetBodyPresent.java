@@ -26,10 +26,11 @@ public class GetBodyPresent extends MvpPresenter<GetBodyView> implements GetData
 
     @Override
     public void getBody(List<Photo> list) {
-        Log.i("getBody", String.valueOf(list.size()));
+//        Log.i("getBody", String.valueOf(list.size()));
         if(list!=null) {
             getViewState().showRetrofit(list);
         }
+        else getViewState().fail();
     }
 }
 

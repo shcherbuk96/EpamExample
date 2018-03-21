@@ -12,4 +12,5 @@ import java.util.List;
 public interface GetBodyView extends MvpView{
 
     void showRetrofit(List<Photo> list);
+    void fail();
 }

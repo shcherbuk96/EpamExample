@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -67,18 +68,6 @@ public class Part1 extends MvpAppCompatFragment implements ActionBarView, GetBod
         return view;
     }
 
-    public void addListPhoto(final List<Photo> photoList) {
-
-        realm.executeTransaction(new Realm.Transaction() {
-
-            @Override
-            public void execute(Realm realm) {
-                realm.delete(Photo.class);
-                realm.insertOrUpdate(photoList);
-            }
-        });
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -96,17 +85,18 @@ public class Part1 extends MvpAppCompatFragment implements ActionBarView, GetBod
     public void showRetrofit(List<Photo> list) {
 
         if (recyclerAdapter == null) {
-            addListPhoto(list);
-            Log.i("recyclerAdapter", "null");
             recyclerAdapter = new RecyclerAdapter(list, getContext());
-
         } else {
-            Log.i("recyclerAdapter", "!null");
             recyclerAdapter.updateData(list);
         }
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(recyclerAdapter);
+    }
+
+    @Override
+    public void fail() {
+        Toast.makeText(getContext(),"Проверьте интернет соединение",Toast.LENGTH_SHORT).show();
     }
 }
