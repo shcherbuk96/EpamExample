@@ -1,7 +1,5 @@
 package com.example.epamexample.Presenters;
 
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -9,8 +7,6 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.example.epamexample.Part1.Api;
 import com.example.epamexample.Part1.ListApi;
 import com.example.epamexample.Part1.Photo;
-import com.example.epamexample.Part1.RecyclerAdapter;
-import com.example.epamexample.R;
 import com.example.epamexample.Views.GetBodyView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,12 +26,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @InjectViewState
 public class GetBodyPresent extends MvpPresenter<GetBodyView> {
     Realm realm;
-    public GetBodyPresent(){
-        realm=Realm.getDefaultInstance();
+
+    public GetBodyPresent() {
+        realm = Realm.getDefaultInstance();
         retrofitCall();
     }
 
-    void retrofitCall(){
+    void retrofitCall() {
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
