@@ -1,7 +1,7 @@
-package com.example.epamexample.Views;
+package com.example.epamexample.views;
 
 import com.arellomobile.mvp.MvpView;
-import com.example.epamexample.Part1.Photo;
+import com.example.epamexample.part1.Photo;
 
 import java.util.List;
 

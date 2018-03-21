@@ -1,4 +1,4 @@
-package com.example.epamexample.Part1;
+package com.example.epamexample.part1;
 
 
 import android.content.Context;
@@ -15,11 +15,11 @@ import android.view.ViewGroup;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.example.epamexample.Presenters.ActionBarPresenter;
-import com.example.epamexample.Presenters.GetBodyPresent;
+import com.example.epamexample.presenters.ActionBarPresenter;
+import com.example.epamexample.presenters.GetBodyPresent;
 import com.example.epamexample.R;
-import com.example.epamexample.Views.ActionBarView;
-import com.example.epamexample.Views.GetBodyView;
+import com.example.epamexample.views.ActionBarView;
+import com.example.epamexample.views.GetBodyView;
 
 import java.util.List;
 

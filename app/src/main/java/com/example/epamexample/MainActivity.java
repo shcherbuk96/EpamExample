@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
-import com.example.epamexample.Part1.Part1;
+import com.example.epamexample.part1.Part1;
 
 import io.realm.Realm;
 

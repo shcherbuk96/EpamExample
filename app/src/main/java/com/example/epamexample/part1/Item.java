@@ -1,8 +1,7 @@
-package com.example.epamexample.Part1;
+package com.example.epamexample.part1;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,11 +10,11 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.example.epamexample.Presenters.ActionBarPresenter;
-import com.example.epamexample.Presenters.ItemPresenter;
+import com.example.epamexample.presenters.ActionBarPresenter;
+import com.example.epamexample.presenters.ItemPresenter;
 import com.example.epamexample.R;
-import com.example.epamexample.Views.ActionBarView;
-import com.example.epamexample.Views.ItemView;
+import com.example.epamexample.views.ActionBarView;
+import com.example.epamexample.views.ItemView;
 import com.squareup.picasso.Picasso;
 
 public class Item extends MvpAppCompatActivity implements View.OnClickListener, Constants, ItemView, ActionBarView {

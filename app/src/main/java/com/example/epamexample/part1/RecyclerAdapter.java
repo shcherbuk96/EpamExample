@@ -1,4 +1,4 @@
-package com.example.epamexample.Part1;
+package com.example.epamexample.part1;
 
 import android.content.Context;
 import android.content.Intent;

@@ -1,4 +1,4 @@
-package com.example.epamexample.Views;
+package com.example.epamexample.views;
 
 import com.arellomobile.mvp.MvpView;
 

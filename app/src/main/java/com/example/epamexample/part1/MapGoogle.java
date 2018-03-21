@@ -1,4 +1,4 @@
-package com.example.epamexample.Part1;
+package com.example.epamexample.part1;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;

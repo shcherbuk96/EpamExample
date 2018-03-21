@@ -1,13 +1,10 @@
-package com.example.epamexample.Presenters;
+package com.example.epamexample.model;
 
 import android.util.Log;
 
-import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
-import com.example.epamexample.Part1.Api;
-import com.example.epamexample.Part1.ListApi;
-import com.example.epamexample.Part1.Photo;
-import com.example.epamexample.Views.GetBodyView;
+import com.example.epamexample.part1.Api;
+import com.example.epamexample.part1.ListApi;
+import com.example.epamexample.part1.Photo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -20,19 +17,24 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by Yauheni_Shcharbuk on 3/20/2018.
+ * Created by Yauheni_Shcharbuk on 3/21/2018.
  */
 
-@InjectViewState
-public class GetBodyPresent extends MvpPresenter<GetBodyView> {
-    Realm realm;
+public class ModelPart1 {
 
-    public GetBodyPresent() {
-        realm = Realm.getDefaultInstance();
+    Realm realm;
+    private GetDataRetrofit getDataRetrofit;
+
+    public ModelPart1() {
+    }
+
+    public ModelPart1(GetDataRetrofit getDataRetrofit) {
+        this.getDataRetrofit = getDataRetrofit;
         retrofitCall();
     }
 
-    void retrofitCall() {
+    public void retrofitCall() {
+        realm = Realm.getDefaultInstance();
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -48,11 +50,7 @@ public class GetBodyPresent extends MvpPresenter<GetBodyView> {
         listApiCall.enqueue(new Callback<ListApi>() {
             @Override
             public void onResponse(Call<ListApi> call, Response<ListApi> response) {
-                if (response.isSuccessful()) {
-                    getViewState().showRetrofit(response.body().getList());
-                } else {
-                    Log.i("else", "response code " + response.code());
-                }
+                getDataRetrofit.getBody(response.body().getList());
             }
 
             @Override
@@ -61,11 +59,11 @@ public class GetBodyPresent extends MvpPresenter<GetBodyView> {
                 if (realm.where(Photo.class).findFirst() != null) {
                     Log.i("DB", "DB!=null");
                     RealmResults<Photo> result = realm.where(Photo.class).findAll();
-                    getViewState().showRetrofit(realm.copyFromRealm(result));
+                    getDataRetrofit.getBody(realm.copyFromRealm(result));
                 }
             }
         });
     }
+
+
 }
-
-

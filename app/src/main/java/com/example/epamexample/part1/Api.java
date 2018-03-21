@@ -1,4 +1,4 @@
-package com.example.epamexample.Part1;
+package com.example.epamexample.part1;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
