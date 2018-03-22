@@ -16,7 +16,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> implements Constants {
+import static com.example.epamexample.part1.Constants.KEY_NAME;
+import static com.example.epamexample.part1.Constants.KEY_URL;
+
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
     private Context context;
     private List<Photo> items;
 

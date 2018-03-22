@@ -8,17 +8,15 @@ import com.example.epamexample.part1.Photo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.List;
+
 import io.realm.Realm;
-import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by Yauheni_Shcharbuk on 3/21/2018.
- */
 
 public class ModelPart1 {
 
@@ -30,7 +28,6 @@ public class ModelPart1 {
 
     public ModelPart1(GetDataRetrofit getDataRetrofit) {
         this.getDataRetrofit = getDataRetrofit;
-        retrofitCall();
     }
 
     public void retrofitCall() {
@@ -50,19 +47,34 @@ public class ModelPart1 {
         listApiCall.enqueue(new Callback<ListApi>() {
             @Override
             public void onResponse(Call<ListApi> call, Response<ListApi> response) {
+                addListPhoto(response.body().list);
                 getDataRetrofit.getBody(response.body().getList());
             }
 
             @Override
             public void onFailure(Call<ListApi> call, Throwable t) {
                 Log.i("onFailure", t.toString());
-                if (realm.where(Photo.class).findFirst() != null) {
-                    Log.i("DB", "DB!=null");
-                    RealmResults<Photo> result = realm.where(Photo.class).findAll();
-                    getDataRetrofit.getBody(realm.copyFromRealm(result));
-                }
+                getDataRetrofit.getBody(null);
             }
         });
+    }
+
+    public void addListPhoto(final List<Photo> photoList) {
+
+        realm.executeTransaction(new Realm.Transaction() {
+
+            @Override
+            public void execute(Realm realm) {
+                realm.delete(Photo.class);
+                realm.insertOrUpdate(photoList);
+            }
+        });
+    }
+
+    public void realmClose() {
+        if (realm != null) {
+            realm.close();
+        }
     }
 
 
