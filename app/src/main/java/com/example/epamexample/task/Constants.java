@@ -1,4 +1,4 @@
-package com.example.epamexample.part1;
+package com.example.epamexample.task;
 
 public class Constants {
     public static final String KEY_NAME = "NAME";

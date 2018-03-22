@@ -35,8 +35,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".part1.Item" />
-        <activity android:name=".part1.MapGoogle"></activity>
+        <activity android:name=".task.ItemActivity" />
+        <activity android:name=".task.MapGoogleActivity"></activity>
     </application>
 
 

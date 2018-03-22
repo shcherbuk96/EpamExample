@@ -1,9 +1,6 @@
-package com.example.epamexample.part1;
+package com.example.epamexample.task;
 
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,6 +13,8 @@ import android.widget.Toast;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.epamexample.R;
+import com.example.epamexample.adapter.RecyclerAdapter;
+import com.example.epamexample.pojo.Photo;
 import com.example.epamexample.presenters.ActionBarPresenter;
 import com.example.epamexample.presenters.GetBodyPresent;
 import com.example.epamexample.views.ActionBarView;
@@ -23,10 +22,8 @@ import com.example.epamexample.views.GetBodyView;
 
 import java.util.List;
 
-import io.realm.Realm;
 
-
-public class Part1 extends MvpAppCompatFragment implements ActionBarView, GetBodyView {
+public class MainFragment extends MvpAppCompatFragment implements ActionBarView, GetBodyView {
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
 

@@ -1,6 +1,6 @@
 package com.example.epamexample.model;
 
-import com.example.epamexample.part1.Photo;
+import com.example.epamexample.pojo.Photo;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.epamexample.part1;
+package com.example.epamexample.task;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,12 +16,12 @@ import com.example.epamexample.views.ActionBarView;
 import com.example.epamexample.views.ItemView;
 import com.squareup.picasso.Picasso;
 
-import static com.example.epamexample.part1.Constants.KEY_LATI;
-import static com.example.epamexample.part1.Constants.KEY_LONGI;
-import static com.example.epamexample.part1.Constants.KEY_NAME;
-import static com.example.epamexample.part1.Constants.KEY_URL;
+import static com.example.epamexample.task.Constants.KEY_LATI;
+import static com.example.epamexample.task.Constants.KEY_LONGI;
+import static com.example.epamexample.task.Constants.KEY_NAME;
+import static com.example.epamexample.task.Constants.KEY_URL;
 
-public class Item extends MvpAppCompatActivity implements View.OnClickListener, ItemView, ActionBarView {
+public class ItemActivity extends MvpAppCompatActivity implements View.OnClickListener, ItemView, ActionBarView {
 
     @InjectPresenter
     ItemPresenter itemPresenter;
@@ -63,7 +63,7 @@ public class Item extends MvpAppCompatActivity implements View.OnClickListener, 
 
     @Override
     public void onClick(View view) {
-        Intent in = new Intent(this, MapGoogle.class);
+        Intent in = new Intent(this, MapGoogleActivity.class);
 
         in.putExtra(KEY_LATI, intent.getDoubleExtra(KEY_LATI, 0));
         in.putExtra(KEY_LONGI, intent.getDoubleExtra(KEY_LONGI, 0));

@@ -1,4 +1,4 @@
-package com.example.epamexample.part1;
+package com.example.epamexample.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,12 +12,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.epamexample.R;
+import com.example.epamexample.task.Constants;
+import com.example.epamexample.task.ItemActivity;
+import com.example.epamexample.pojo.Photo;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import static com.example.epamexample.part1.Constants.KEY_NAME;
-import static com.example.epamexample.part1.Constants.KEY_URL;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
     private Context context;
@@ -50,9 +51,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         holder.relative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, Item.class);
-                intent.putExtra(KEY_NAME, photo.getTitle());
-                intent.putExtra(KEY_URL, photo.getUrl());
+                Intent intent = new Intent(context, ItemActivity.class);
+                intent.putExtra(Constants.KEY_NAME, photo.getTitle());
+                intent.putExtra(Constants.KEY_URL, photo.getUrl());
                 context.startActivity(intent);
             }
         });
@@ -76,7 +77,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         public ImageView photo;
         RelativeLayout relative;
 
-        public MyViewHolder(View view) {
+        MyViewHolder(View view) {
             super(view);
             photo = view.findViewById(R.id.photo);
             name = view.findViewById(R.id.name);

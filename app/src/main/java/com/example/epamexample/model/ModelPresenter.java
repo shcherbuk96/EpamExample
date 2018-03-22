@@ -1,16 +1,18 @@
 package com.example.epamexample.model;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.epamexample.part1.Api;
-import com.example.epamexample.part1.ListApi;
-import com.example.epamexample.part1.Photo;
+import com.example.epamexample.api.Api;
+import com.example.epamexample.pojo.ListApi;
+import com.example.epamexample.pojo.Photo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -18,15 +20,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class ModelPart1 {
+public class ModelPresenter {
 
-    Realm realm;
+    private Realm realm;
     private GetDataRetrofit getDataRetrofit;
 
-    public ModelPart1() {
-    }
 
-    public ModelPart1(GetDataRetrofit getDataRetrofit) {
+    public ModelPresenter(GetDataRetrofit getDataRetrofit) {
         this.getDataRetrofit = getDataRetrofit;
     }
 
@@ -46,25 +46,28 @@ public class ModelPart1 {
         Call<ListApi> listApiCall = api.listData();
         listApiCall.enqueue(new Callback<ListApi>() {
             @Override
-            public void onResponse(Call<ListApi> call, Response<ListApi> response) {
-                addListPhoto(response.body().list);
-                getDataRetrofit.getBody(response.body().getList());
+            public void onResponse(@NonNull Call<ListApi> call, @NonNull Response<ListApi> response) {
+                if (response.body()!=null && response.body().getList() != null) {
+                    addListPhoto(response.body().list);
+                    getDataRetrofit.getBody(response.body().getList());
+                }
+
             }
 
             @Override
-            public void onFailure(Call<ListApi> call, Throwable t) {
-                Log.i("onFailure", t.toString());
-                getDataRetrofit.getBody(null);
+            public void onFailure(@NonNull Call<ListApi> call, @NonNull Throwable t) {
+                RealmResults<Photo> result = realm.where(Photo.class).findAll();
+                getDataRetrofit.getBody(realm.copyFromRealm(result));
             }
         });
     }
 
-    public void addListPhoto(final List<Photo> photoList) {
+    private void addListPhoto(final List<Photo> photoList) {
 
         realm.executeTransaction(new Realm.Transaction() {
 
             @Override
-            public void execute(Realm realm) {
+            public void execute(@NonNull Realm realm) {
                 realm.delete(Photo.class);
                 realm.insertOrUpdate(photoList);
             }
@@ -76,6 +79,7 @@ public class ModelPart1 {
             realm.close();
         }
     }
+
 
 
 }

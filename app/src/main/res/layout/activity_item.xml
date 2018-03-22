@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.epamexample.part1.Item">
+    tools:context="com.example.epamexample.task.ItemActivity">
 
     <ImageView
         android:id="@+id/item_image"

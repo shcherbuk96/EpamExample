@@ -1,4 +1,6 @@
-package com.example.epamexample.part1;
+package com.example.epamexample.api;
+
+import com.example.epamexample.pojo.ListApi;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

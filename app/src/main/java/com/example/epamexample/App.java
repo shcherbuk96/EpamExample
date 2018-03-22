@@ -4,9 +4,6 @@ import android.app.Application;
 
 import io.realm.Realm;
 
-/**
- * Created by Yauheni_Shcharbuk on 3/22/2018.
- */
 
 public class App extends Application {
     @Override

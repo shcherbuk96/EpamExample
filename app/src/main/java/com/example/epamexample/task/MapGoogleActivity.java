@@ -1,15 +1,15 @@
-package com.example.epamexample.part1;
+package com.example.epamexample.task;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.epamexample.R;
+import com.example.epamexample.pojo.Photo;
 import com.example.epamexample.presenters.GetBodyPresent;
 import com.example.epamexample.views.GetBodyView;
 import com.google.android.gms.common.ConnectionResult;
@@ -27,10 +27,13 @@ import com.squareup.picasso.Target;
 import java.util.List;
 
 
-public class MapGoogle extends MvpAppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GetBodyView {
+public class MapGoogleActivity extends MvpAppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GetBodyView {
+
     GoogleMap mMap;
+
     @InjectPresenter
     GetBodyPresent getBodyPresent;
+
     private GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -52,42 +55,33 @@ public class MapGoogle extends MvpAppCompatActivity implements OnMapReadyCallbac
 
 
     public void loadImage(List<Photo> photos) {
-        Log.i("photoList", String.valueOf(photos.size()));
-        if (photos != null) {
-            for (final Photo photo : photos) {
+        for (final Photo photo : photos) {
+            Picasso.with(getBaseContext()).load(photo.getUrl()).resize(120, 120).into(new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 
-                Picasso.with(getBaseContext()).load(photo.getUrl()).resize(120, 120).into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(photo.getLatitude(), photo.getLongitude())).title(photo.getTitle())
+                            .icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
+                }
 
-                        mMap.addMarker(new MarkerOptions().position(new LatLng(photo.getLatitude(), photo.getLongitude())).title(photo.getTitle())
-                                .icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
-                    }
+                @Override
+                public void onBitmapFailed(Drawable errorDrawable) {
 
-                    @Override
-                    public void onBitmapFailed(Drawable errorDrawable) {
+                }
 
-                    }
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
 
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                    }
-                });
-
-            }
+                }
+            });
         }
-
-
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         mMap = googleMap;
 
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(45,45));
-
     }
 
     @Override

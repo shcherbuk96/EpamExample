@@ -1,4 +1,4 @@
-package com.example.epamexample.part1;
+package com.example.epamexample.pojo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,6 +1,7 @@
 package com.example.epamexample;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -11,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
-import com.example.epamexample.part1.Part1;
+import com.example.epamexample.task.MainFragment;
 
 import io.realm.Realm;
 
@@ -31,7 +32,7 @@ public class MainActivity extends MvpAppCompatActivity
         Realm.init(this);
 
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, new Part1()).commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, new MainFragment()).commit();
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -73,14 +74,14 @@ public class MainActivity extends MvpAppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         fragmentManager = getSupportFragmentManager();
 
         if (id == R.id.nav_part1) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new Part1()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new MainFragment()).commit();
         } else if (id == R.id.nav_part2) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new Part2()).commit();
         }
