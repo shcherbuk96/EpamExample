@@ -9,6 +9,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.epamexample.R;
+import com.example.epamexample.model.GetDataRetrofit;
+import com.example.epamexample.model.ModelPart1;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
@@ -32,14 +34,17 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class MapGoogle extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
+public class MapGoogle extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener,GetDataRetrofit {
     GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
+    ModelPart1 modelPart1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_google);
+
+        modelPart1=new ModelPart1(this);
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
@@ -48,7 +53,7 @@ public class MapGoogle extends AppCompatActivity implements OnMapReadyCallback, 
                 .enableAutoManage(this, this)
                 .build();
 
-        Gson gson = new GsonBuilder()
+       /* Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
 
@@ -78,7 +83,7 @@ public class MapGoogle extends AppCompatActivity implements OnMapReadyCallback, 
                 Log.i("onFailure", t.toString());
                 Toast.makeText(getApplicationContext(), "Ошибка загрузки данных", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getSupportFragmentManager()
@@ -139,4 +144,9 @@ public class MapGoogle extends AppCompatActivity implements OnMapReadyCallback, 
     }
 
 
+    @Override
+    public void getBody(List<Photo> list) {
+        Log.i("getBidy",String.valueOf(list.size()));
+        loadImage(list);
+    }
 }
