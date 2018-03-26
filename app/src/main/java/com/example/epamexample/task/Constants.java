@@ -7,5 +7,7 @@ public class Constants {
     public static final String KEY_LATI = "latitude";
     public static final String KEY_LONGI = "longitude";
 
+    public static final String BASE_URL="https://api.myjson.com/bins/";
+
 
 }
