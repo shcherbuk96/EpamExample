@@ -54,28 +54,6 @@ public class ModelPresenter {
         Api api = retrofit.create(Api.class);
         observable=api.listData();
 
-        //callObserver();
-/*        observable
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();*/
-        /*Call<ListApi> listApiCall = api.listData();
-        listApiCall.enqueue(new Callback<ListApi>() {
-            @Override
-            public void onResponse(@NonNull Call<ListApi> call, @NonNull Response<ListApi> response) {
-                if (response.body()!=null && response.body().getList() != null) {
-                    addListPhoto(response.body().list);
-                    getDataRetrofit.getBody(response.body().getList());
-                }
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ListApi> call, @NonNull Throwable t) {
-                RealmResults<Photo> result = realm.where(Photo.class).findAll();
-                getDataRetrofit.getBody(realm.copyFromRealm(result));
-            }
-        });*/
     }
 
     private void addListPhoto(final List<Photo> photoList) {
@@ -96,38 +74,8 @@ public class ModelPresenter {
         }
     }
 
-    public void callObserver(){
-        observer=new Observer<ListApi>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(ListApi listApi) {
-                addListPhoto(listApi.getList());
-                getDataRetrofit.getBody(listApi.getList());
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                RealmResults<Photo> result = realm.where(Photo.class).findAll();
-                getDataRetrofit.getBody(realm.copyFromRealm(result));
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-    }
 
     public Observable<ListApi> getObservable() {
         return observable;
-    }
-
-    public Observer<ListApi> getObserver() {
-        callObserver();
-        return observer;
     }
 }
