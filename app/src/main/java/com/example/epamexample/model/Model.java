@@ -5,35 +5,23 @@ import android.util.Log;
 
 import com.example.epamexample.api.Api;
 import com.example.epamexample.pojo.ListApi;
-import com.example.epamexample.pojo.Photo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
-import java.util.List;
-
 import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
-
-import io.realm.RealmResults;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 import static com.example.epamexample.task.Constants.BASE_URL;
 
 
-public class ModelPresenter {
-    Observer<ListApi> observer;
-    Observable<ListApi> observable;
+public class Model {
     private Realm realm;
     private GetDataRetrofit getDataRetrofit;
 
-    public ModelPresenter(GetDataRetrofit getDataRetrofit) {
+    public Model(GetDataRetrofit getDataRetrofit) {
         this.getDataRetrofit = getDataRetrofit;
     }
 
@@ -49,20 +37,18 @@ public class ModelPresenter {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-
-
         Api api = retrofit.create(Api.class);
-        observable=api.listData();
-
+        getDataRetrofit.getBody(api.listData(), true);
+        Log.i("GetBodyPresent", "1");
     }
 
-    private void addListPhoto(final List<Photo> photoList) {
-
+    public void addListPhoto(final ListApi photoList) {
+        Log.i("GetBodyPresent", "2");
         realm.executeTransaction(new Realm.Transaction() {
 
             @Override
             public void execute(@NonNull Realm realm) {
-                realm.delete(Photo.class);
+                realm.delete(ListApi.class);
                 realm.insertOrUpdate(photoList);
             }
         });
@@ -74,8 +60,14 @@ public class ModelPresenter {
         }
     }
 
-
-    public Observable<ListApi> getObservable() {
-        return observable;
+    public void getRealm() {
+        ListApi listApi = realm.where(ListApi.class).findFirst();
+        Observable<ListApi> listApiObservable = null;
+        if (listApi != null) {
+            listApiObservable = Observable.just(listApi);
+        }
+        getDataRetrofit.getBody(listApiObservable, false);
     }
+
+
 }

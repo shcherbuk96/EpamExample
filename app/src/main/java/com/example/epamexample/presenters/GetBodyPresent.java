@@ -5,67 +5,64 @@ import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.epamexample.model.GetDataRetrofit;
-import com.example.epamexample.model.ModelPresenter;
+import com.example.epamexample.model.Model;
 import com.example.epamexample.pojo.ListApi;
-import com.example.epamexample.pojo.Photo;
 import com.example.epamexample.views.GetBodyView;
 
-import java.util.List;
-
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import io.realm.RealmResults;
 
 
 @InjectViewState
 public class GetBodyPresent extends MvpPresenter<GetBodyView> implements GetDataRetrofit {
-    private ModelPresenter modelPart1;
-    Observer<ListApi> observer;
-    public GetBodyPresent() {
-        modelPart1 = new ModelPresenter(this);
+    private Model modelPart1;
 
+    public GetBodyPresent() {
+        Log.i("GetBodyPresent", "3");
+        modelPart1 = new Model(this);
+        modelPart1.retrofitCall();
     }
 
     @Override
-    public void getBody(List<Photo> list) {
-        modelPart1.retrofitCall();
+    public void getBody(Observable<ListApi> observable, final boolean check) {
+        Log.i("GetBodyPresent", "4");
 
-        observer=new Observer<ListApi>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(ListApi listApi) {
-                getViewState().showRetrofit(listApi.getList());
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                /*RealmResults<Photo> result = realm.where(Photo.class).findAll();
-                getDataRetrofit.getBody(realm.copyFromRealm(result));*/
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-        modelPart1.getObservable()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
-        /*if (list != null) {
-            Log.i("list",String.valueOf(list.size()));
-            getViewState().showRetrofit(list);
-            modelPart1.realmClose();
-        }
-        if (list == null) {
+        if (observable == null) {
             getViewState().fail();
-        }*/
+        } else {
+            observable
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<ListApi>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(ListApi listApi) {
+                            if (check) {
+                                modelPart1.addListPhoto(listApi);
+                                getViewState().showRetrofit(listApi.getList());
+                            } else {
+                                getViewState().showRetrofit(listApi.getList());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            modelPart1.getRealm();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        }
     }
 }
 

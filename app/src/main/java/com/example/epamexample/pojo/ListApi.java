@@ -9,15 +9,15 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 
 
-public class ListApi{
+public class ListApi extends RealmObject{
     @SerializedName("photos")
-    public List<Photo> list;
+    public RealmList<Photo> list;
 
-    public List<Photo> getList() {
+    public RealmList<Photo> getList() {
         return list;
     }
 
-    public void setList(List<Photo> list) {
+    public void setList(RealmList<Photo> list) {
         this.list = list;
     }
 }

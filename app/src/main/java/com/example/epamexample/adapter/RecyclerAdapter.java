@@ -12,9 +12,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.epamexample.R;
+import com.example.epamexample.pojo.Photo;
 import com.example.epamexample.task.Constants;
 import com.example.epamexample.task.ItemActivity;
-import com.example.epamexample.pojo.Photo;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

@@ -1,10 +1,10 @@
 package com.example.epamexample.model;
 
-import com.example.epamexample.pojo.Photo;
+import com.example.epamexample.pojo.ListApi;
 
-import java.util.List;
+import io.reactivex.Observable;
 
 
 public interface GetDataRetrofit {
-    void getBody(List<Photo> list);
+    void getBody(Observable<ListApi> observable, boolean check);
 }
