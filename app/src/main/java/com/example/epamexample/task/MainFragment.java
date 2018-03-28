@@ -16,28 +16,24 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.epamexample.R;
 import com.example.epamexample.adapter.RecyclerAdapter;
 import com.example.epamexample.pojo.Photo;
-import com.example.epamexample.presenters.ActionBarPresenter;
-import com.example.epamexample.presenters.GetBodyPresent;
-import com.example.epamexample.views.ActionBarView;
+import com.example.epamexample.presenters.MainPresenter;
 import com.example.epamexample.views.GetBodyView;
 
 import java.util.List;
 
 
-public class MainFragment extends MvpAppCompatFragment implements ActionBarView, GetBodyView {
+public class MainFragment extends MvpAppCompatFragment implements GetBodyView {
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
 
     @InjectPresenter
-    ActionBarPresenter actionBarPresenter;
-
-    @InjectPresenter
-    GetBodyPresent getBodyPresent;
+    MainPresenter getBodyPresent;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().setTitle("Task");
     }
 
     @Override
@@ -62,10 +58,6 @@ public class MainFragment extends MvpAppCompatFragment implements ActionBarView,
         super.onDestroy();
     }
 
-    @Override
-    public void showActionBar(String actionBar) {
-        getActivity().setTitle(actionBar);
-    }
 
     @Override
     public void showRetrofit(List<Photo> list) {

@@ -4,10 +4,13 @@ import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.example.epamexample.model.GetDataRetrofit;
-import com.example.epamexample.model.Model;
+import com.example.epamexample.model.GetObservable;
+import com.example.epamexample.model.InternetModel;
+import com.example.epamexample.model.RealmModel;
 import com.example.epamexample.pojo.ListApi;
 import com.example.epamexample.views.GetBodyView;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -17,22 +20,22 @@ import io.reactivex.schedulers.Schedulers;
 
 
 @InjectViewState
-public class GetBodyPresent extends MvpPresenter<GetBodyView> implements GetDataRetrofit {
-    private Model modelPart1;
-
-    public GetBodyPresent() {
-        Log.i("GetBodyPresent", "3");
-        modelPart1 = new Model(this);
+public class MainPresenter extends MvpPresenter<GetBodyView> implements GetObservable {
+    private InternetModel modelPart1;
+    private RealmModel realmModel;
+    @Inject
+    public MainPresenter() {
+        Log.i("MainPresenter", "3");
+        modelPart1 = new InternetModel(this);
+        realmModel=new RealmModel(this);
         modelPart1.retrofitCall();
     }
 
     @Override
     public void getBody(Observable<ListApi> observable, final boolean check) {
-        Log.i("GetBodyPresent", "4");
-
         if (observable == null) {
             getViewState().fail();
-        } else {
+        } else{
             observable
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -45,7 +48,7 @@ public class GetBodyPresent extends MvpPresenter<GetBodyView> implements GetData
                         @Override
                         public void onNext(ListApi listApi) {
                             if (check) {
-                                modelPart1.addListPhoto(listApi);
+                                realmModel.addListPhoto(listApi);
                                 getViewState().showRetrofit(listApi.getList());
                             } else {
                                 getViewState().showRetrofit(listApi.getList());
@@ -54,7 +57,7 @@ public class GetBodyPresent extends MvpPresenter<GetBodyView> implements GetData
 
                         @Override
                         public void onError(Throwable e) {
-                            modelPart1.getRealm();
+                            realmModel.getRealm();
                         }
 
                         @Override
@@ -62,7 +65,11 @@ public class GetBodyPresent extends MvpPresenter<GetBodyView> implements GetData
 
                         }
                     });
+            Log.i("MainPresenter", "4");
         }
+
+
+
     }
 }
 

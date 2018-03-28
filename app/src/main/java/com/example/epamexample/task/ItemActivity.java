@@ -8,12 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
-import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.epamexample.R;
-import com.example.epamexample.presenters.ActionBarPresenter;
-import com.example.epamexample.presenters.ItemPresenter;
-import com.example.epamexample.views.ActionBarView;
-import com.example.epamexample.views.ItemView;
 import com.squareup.picasso.Picasso;
 
 import static com.example.epamexample.task.Constants.KEY_LATI;
@@ -21,13 +16,7 @@ import static com.example.epamexample.task.Constants.KEY_LONGI;
 import static com.example.epamexample.task.Constants.KEY_NAME;
 import static com.example.epamexample.task.Constants.KEY_URL;
 
-public class ItemActivity extends MvpAppCompatActivity implements View.OnClickListener, ItemView, ActionBarView {
-
-    @InjectPresenter
-    ItemPresenter itemPresenter;
-
-    @InjectPresenter
-    ActionBarPresenter actionBarPresenter;
+public class ItemActivity extends MvpAppCompatActivity implements View.OnClickListener {
 
     TextView name;
     ImageView image;
@@ -42,16 +31,16 @@ public class ItemActivity extends MvpAppCompatActivity implements View.OnClickLi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        name = findViewById(R.id.item_name);
+        image = findViewById(R.id.item_image);
         btn = findViewById(R.id.btn);
         btn.setOnClickListener(this);
 
 
         intent = getIntent();
-
-        itemPresenter.getViewState().showName(intent.getStringExtra(KEY_NAME));
-        itemPresenter.getViewState().showPhoto(intent.getStringExtra(KEY_URL));
-
-        actionBarPresenter.getViewState().showActionBar(intent.getStringExtra(KEY_NAME));
+        name.setText(intent.getStringExtra(KEY_NAME));
+        Picasso.with(this).load(intent.getStringExtra(KEY_URL)).into(image);
+        setTitle(intent.getStringExtra(KEY_NAME));
 
     }
 
@@ -71,20 +60,4 @@ public class ItemActivity extends MvpAppCompatActivity implements View.OnClickLi
         startActivity(in);
     }
 
-    @Override
-    public void showName(String namePhoto) {
-        name = findViewById(R.id.item_name);
-        name.setText(namePhoto);
-    }
-
-    @Override
-    public void showPhoto(String urlPhoto) {
-        image = findViewById(R.id.item_image);
-        Picasso.with(this).load(urlPhoto).into(image);
-    }
-
-    @Override
-    public void showActionBar(String actionBar) {
-        setTitle(actionBar);
-    }
 }

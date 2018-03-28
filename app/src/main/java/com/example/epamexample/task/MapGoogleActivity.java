@@ -10,7 +10,7 @@ import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.epamexample.R;
 import com.example.epamexample.pojo.Photo;
-import com.example.epamexample.presenters.GetBodyPresent;
+import com.example.epamexample.presenters.MainPresenter;
 import com.example.epamexample.views.GetBodyView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -30,10 +30,8 @@ import java.util.List;
 public class MapGoogleActivity extends MvpAppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GetBodyView {
 
     GoogleMap mMap;
-
     @InjectPresenter
-    GetBodyPresent getBodyPresent;
-
+    MainPresenter getBodyPresent;
     private GoogleApiClient mGoogleApiClient;
 
     @Override
