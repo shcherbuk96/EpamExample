@@ -5,21 +5,17 @@ import android.util.Log;
 
 import com.example.epamexample.pojo.ListApi;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 import io.realm.Realm;
-
-/**
- * Created by Администратор on 28.03.2018.
- */
 
 public class RealmModel {
 
     private Realm realm;
     private GetObservable getDataRetrofit;
 
-    public RealmModel(GetObservable getDataRetrofit){
+    public RealmModel(GetObservable getDataRetrofit) {
         realm = Realm.getDefaultInstance();
-        this.getDataRetrofit=getDataRetrofit;
+        this.getDataRetrofit = getDataRetrofit;
     }
 
     public void addListPhoto(final ListApi photoList) {
@@ -34,18 +30,14 @@ public class RealmModel {
         });
     }
 
-    public void realmClose() {
-        if (realm != null) {
-            realm.close();
-        }
-    }
 
     public void getRealm() {
         ListApi listApi = realm.where(ListApi.class).findFirst();
-        Observable<ListApi> listApiObservable = null;
+        Flowable<ListApi> flowable = null;
         if (listApi != null) {
-            listApiObservable = Observable.just(listApi);
+            //flowable=Flowable.just(listApi);
+            flowable = listApi.asFlowable();
         }
-        getDataRetrofit.getBody(listApiObservable, false);
+        getDataRetrofit.getBody(flowable, false);
     }
 }

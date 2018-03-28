@@ -10,5 +10,5 @@ import retrofit2.http.GET;
 
 public interface Api {
     @GET("upt7z")
-    Observable<ListApi> listData();
+    Flowable<ListApi> listData();
 }

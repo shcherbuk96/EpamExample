@@ -13,11 +13,9 @@ import io.realm.Realm;
 public class InternetModel {
     @Inject
     Api api;
-    private Realm realm;
     private GetObservable getDataRetrofit;
 
     public InternetModel(GetObservable getDataRetrofit) {
-        realm = Realm.getDefaultInstance();
         App.getRetrofitComponent().inject(this);
         this.getDataRetrofit = getDataRetrofit;
     }
