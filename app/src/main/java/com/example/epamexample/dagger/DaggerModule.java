@@ -12,8 +12,6 @@ import dagger.Provides;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.example.epamexample.task.Constants.BASE_URL;
-
 @Module
 public class DaggerModule {
     private String url;
@@ -24,7 +22,7 @@ public class DaggerModule {
 
     @Singleton
     @Provides
-    public Gson provideGson(){
+    public Gson provideGson() {
         return new GsonBuilder()
                 .setLenient()
                 .create();
@@ -32,7 +30,7 @@ public class DaggerModule {
 
     @Singleton
     @Provides
-    public Retrofit provideRetrofit(Gson gson){
+    public Retrofit provideRetrofit(Gson gson) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

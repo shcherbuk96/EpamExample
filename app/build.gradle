@@ -46,7 +46,6 @@ dependencies {
 
     compile 'com.arello-mobile:moxy:1.5.3'
     compile 'com.arello-mobile:moxy-app-compat:1.5.3'
-    compile 'com.android.support:appcompat-v7:26.1.0'
     annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.3'
 
     //RX

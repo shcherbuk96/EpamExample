@@ -16,23 +16,21 @@ import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 import io.reactivex.FlowableSubscriber;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
 @InjectViewState
 public class MainPresenter extends MvpPresenter<GetBodyView> implements GetObservable {
-    private InternetModel modelPart1;
+    private InternetModel internetModel;
     private RealmModel realmModel;
+
     @Inject
     public MainPresenter() {
         Log.i("MainPresenter", "3");
-        modelPart1 = new InternetModel(this);
-        realmModel=new RealmModel(this);
-        modelPart1.retrofitCall();
+        internetModel = new InternetModel(this);
+        realmModel = new RealmModel(this);
+        internetModel.retrofitCall();
     }
 
     @Override

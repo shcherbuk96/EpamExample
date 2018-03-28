@@ -7,12 +7,11 @@ import com.example.epamexample.api.Api;
 
 import javax.inject.Inject;
 
-import io.realm.Realm;
-
 
 public class InternetModel {
     @Inject
     Api api;
+
     private GetObservable getDataRetrofit;
 
     public InternetModel(GetObservable getDataRetrofit) {
