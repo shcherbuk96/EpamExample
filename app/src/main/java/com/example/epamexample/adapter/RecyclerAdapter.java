@@ -3,7 +3,6 @@ package com.example.epamexample.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import com.example.epamexample.R;
 import com.example.epamexample.pojo.Photo;
 import com.example.epamexample.task.Constants;
 import com.example.epamexample.task.ItemActivity;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -40,7 +38,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        Log.i("RecyclerAdapter", "onBindViewHolder");
 
         final Photo photo = items.get(position);
         holder.name.setText(photo.getTitle());
@@ -65,7 +62,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @Override
     public int getItemCount() {
-        Log.i("size", String.valueOf(items.size()));
         return items.size();
 
     }

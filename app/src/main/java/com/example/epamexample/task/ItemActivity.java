@@ -39,7 +39,13 @@ public class ItemActivity extends MvpAppCompatActivity implements View.OnClickLi
 
         intent = getIntent();
         name.setText(intent.getStringExtra(KEY_NAME));
-        Picasso.with(this).load(intent.getStringExtra(KEY_URL)).into(image);
+        Picasso
+                .with(this)
+                .load(intent.getStringExtra(KEY_URL))
+                .fit()
+                .centerCrop()
+                .error(R.drawable.error)
+                .into(image);
         setTitle(intent.getStringExtra(KEY_NAME));
 
     }

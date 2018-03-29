@@ -6,7 +6,7 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 
 
-public class ListApi extends RealmObject{
+public class ListApi extends RealmObject {
     @SerializedName("photos")
     private RealmList<Photo> list;
 

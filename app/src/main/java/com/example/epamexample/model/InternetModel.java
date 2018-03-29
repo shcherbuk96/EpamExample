@@ -21,6 +21,5 @@ public class InternetModel {
 
     public void retrofitCall() {
         getDataRetrofit.getBody(api.listData(), true);
-        Log.i("MainPresenter", "1");
     }
 }

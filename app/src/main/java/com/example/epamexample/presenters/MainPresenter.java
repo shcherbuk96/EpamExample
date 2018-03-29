@@ -1,7 +1,5 @@
 package com.example.epamexample.presenters;
 
-import android.util.Log;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.epamexample.model.GetObservable;
@@ -17,7 +15,6 @@ import javax.inject.Inject;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableSubscriber;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 
 @InjectViewState
@@ -27,7 +24,6 @@ public class MainPresenter extends MvpPresenter<GetBodyView> implements GetObser
 
     @Inject
     public MainPresenter() {
-        Log.i("MainPresenter", "3");
         internetModel = new InternetModel(this);
         realmModel = new RealmModel(this);
         internetModel.retrofitCall();
@@ -39,7 +35,7 @@ public class MainPresenter extends MvpPresenter<GetBodyView> implements GetObser
             getViewState().fail();
         } else {
             observable
-                    .subscribeOn(Schedulers.newThread())
+                    //.subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new FlowableSubscriber<ListApi>() {
                         @Override
