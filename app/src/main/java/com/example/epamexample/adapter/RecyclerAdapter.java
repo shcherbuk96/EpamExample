@@ -15,6 +15,7 @@ import com.example.epamexample.R;
 import com.example.epamexample.pojo.Photo;
 import com.example.epamexample.task.Constants;
 import com.example.epamexample.task.ItemActivity;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -38,15 +39,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Log.i("RecyclerAdapter", "onBindViewHolder");
 
         final Photo photo = items.get(position);
         holder.name.setText(photo.getTitle());
+
         Picasso
                 .with(context)
                 .load(photo.getUrl())
-                .error(R.drawable.error_image)
+                .error(R.drawable.error)
+                .fit()
+                .centerCrop()
                 .into(holder.photo);
         holder.relative.setOnClickListener(new View.OnClickListener() {
             @Override
