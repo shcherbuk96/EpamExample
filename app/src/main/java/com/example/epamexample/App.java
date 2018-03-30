@@ -14,9 +14,7 @@ import io.realm.RealmConfiguration;
 public class App extends Application {
     static DaggerComponent retrofitComponent;
 
-    public static DaggerComponent getRetrofitComponent() {
-        return retrofitComponent;
-    }
+
 
     @Override
     public void onCreate() {
@@ -31,5 +29,9 @@ public class App extends Application {
                 .build();
         Realm.setDefaultConfiguration(config);
 
+    }
+
+    public static DaggerComponent getRetrofitComponent() {
+        return retrofitComponent;
     }
 }

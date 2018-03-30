@@ -33,8 +33,8 @@ public class RealmModel {
         ListApi listApi = realm.where(ListApi.class).findFirst();
         Flowable<ListApi> flowable = null;
         if (listApi != null && listApi.isValid()) {
-            //flowable=Flowable.just(listApi);
-            flowable = listApi.asFlowable();
+            flowable=Flowable.just(listApi);
+            //flowable = listApi.asFlowable();
         }
         getDataRetrofit.getBody(flowable, false);
     }

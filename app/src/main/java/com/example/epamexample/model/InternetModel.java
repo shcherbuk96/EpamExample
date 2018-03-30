@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 
 public class InternetModel {
+
     @Inject
     Api api;
 
@@ -21,5 +22,6 @@ public class InternetModel {
 
     public void retrofitCall() {
         getDataRetrofit.getBody(api.listData(), true);
+        Log.d("api",api.listData().toString());
     }
 }

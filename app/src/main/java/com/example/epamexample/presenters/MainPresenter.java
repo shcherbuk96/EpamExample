@@ -1,5 +1,7 @@
 package com.example.epamexample.presenters;
 
+import android.util.Log;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.epamexample.model.GetObservable;
@@ -15,6 +17,7 @@ import javax.inject.Inject;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableSubscriber;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 
 @InjectViewState
@@ -22,7 +25,6 @@ public class MainPresenter extends MvpPresenter<GetBodyView> implements GetObser
     private InternetModel internetModel;
     private RealmModel realmModel;
 
-    @Inject
     public MainPresenter() {
         internetModel = new InternetModel(this);
         realmModel = new RealmModel(this);
@@ -33,9 +35,10 @@ public class MainPresenter extends MvpPresenter<GetBodyView> implements GetObser
     public void getBody(Flowable<ListApi> observable, final boolean check) {
         if (observable == null) {
             getViewState().fail();
+            Log.d("api","fail");
         } else {
             observable
-                    //.subscribeOn(Schedulers.newThread())
+                    .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new FlowableSubscriber<ListApi>() {
                         @Override
@@ -45,6 +48,7 @@ public class MainPresenter extends MvpPresenter<GetBodyView> implements GetObser
 
                         @Override
                         public void onNext(ListApi listApi) {
+                            Log.d("api","onNext");
                             if (check) {
                                 realmModel.addListPhoto(listApi);
                                 getViewState().showRetrofit(listApi.getList());
